@@ -3,5 +3,8 @@
     "version": "1.0.0",
     "scripts": {
         "heroku-postbuild": "cd vue && npm install && npm run build"
+    },
+    "engines": {
+        "node": "20.x"
     }
 }
