@@ -2,6 +2,6 @@
     "name": "loomio-deploy",
     "version": "1.0.0",
     "scripts": {
-        "heroku-postbuild": "cd vue && yarn && yarn build"
+        "heroku-postbuild": "cd vue && npm install && npm run build"
     }
 }
