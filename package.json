@@ -1,0 +1,12 @@
+{
+    "name": "loomio-deploy",
+    "version": "1.0.0",
+    "scripts": {
+      // This special script runs automatically after Node deps are installed
+      "heroku-postbuild": "cd vue && yarn && yarn build"
+    },
+    // You might need this if Heroku can't detect Node:
+    "engines": {
+      "node": "16.x"
+    }
+  }
