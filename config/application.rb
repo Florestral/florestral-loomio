@@ -106,6 +106,7 @@ module Loomio
 
     config.cache_store = :redis_cache_store, {
       url: (ENV['REDIS_CACHE_URL'] || ENV.fetch('REDIS_URL', 'redis://localhost:6379')),
+      driver: :ruby,
       ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
     }
     config.action_dispatch.use_cookies_with_metadata = false
