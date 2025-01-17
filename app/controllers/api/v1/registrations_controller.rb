@@ -1,4 +1,7 @@
 class API::V1::RegistrationsController < Devise::RegistrationsController
+  # Skip verifying the Rails CSRF token for API requests:
+  skip_before_action :verify_authenticity_token, only: :create
+
   include LocalesHelper
   before_action :configure_permitted_parameters
   before_action :permission_check, only: :create
