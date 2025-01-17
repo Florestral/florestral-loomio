@@ -52,7 +52,6 @@ gem 'rack-attack'
 gem 'bootsnap', require: false
 gem 'redis-objects'
 gem 'redis-rails'
-gem 'hiredis'
 gem 'connection_pool'
 gem 'ruby-saml'
 gem 'google-cloud-translate'
