@@ -104,7 +104,10 @@ module Loomio
 
     config.action_cable.allowed_request_origins = [ENV['CANONICAL_HOST'], 'http://localhost:8080']
 
-    config.cache_store = :redis_cache_store, { url: (ENV['REDIS_CACHE_URL'] || ENV.fetch('REDIS_URL', 'redis://localhost:6379')) }
+    config.cache_store = :redis_cache_store, {
+      url: (ENV['REDIS_CACHE_URL'] || ENV.fetch('REDIS_URL', 'redis://localhost:6379')),
+      ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    }
     config.action_dispatch.use_cookies_with_metadata = false
 
     if ENV['DISABLE_IPSPOOFINGCHECK']
