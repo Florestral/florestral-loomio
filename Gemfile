@@ -104,3 +104,5 @@ end
 gem "stackprof"
 gem "sentry-ruby"
 gem "sentry-rails"
+
+gem 'newrelic_rpm'
