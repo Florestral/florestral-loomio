@@ -100,3 +100,7 @@ end
 if Dir.exist?('engines/loomio_subs')
   gem 'loomio_subs', path: 'engines/loomio_subs'
 end
+
+gem "stackprof"
+gem "sentry-ruby"
+gem "sentry-rails"
