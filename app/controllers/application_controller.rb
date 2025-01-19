@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   helper_method :supported_locales
   helper_method :is_old_browser?
 
-  skip_before_action :verify_authenticity_token, only: :bug_tunnel
+  skip_before_action :verify_authenticity_token
   caches_page :sitemap
 
   rescue_from(ActionController::UnknownFormat) do
