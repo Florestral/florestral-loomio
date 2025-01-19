@@ -49,6 +49,10 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from(CanCan::AccessDenied) do |exception|
+    Rails.logger.warn "CanCan::AccessDenied: user_id=#{current_user.id if current_user} "\
+                      "action=#{exception.action} subject=#{exception.subject.inspect} "\
+                      "message=#{exception.message}"
+
     if current_user.is_logged_in?
       flash[:error] = t("error.access_denied")
       redirect_to dashboard_path

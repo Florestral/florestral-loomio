@@ -66,7 +66,9 @@ class API::V1::ProfileController < API::V1::RestfulController
   end
 
   def update_profile
-    service.update(**current_user_params)
+    Rails.logger.debug "DEBUG: Starting update_profile with current_user=#{current_user.id if current_user}"
+    service.update(**current_user_params)  # <= Possibly raises or returns an error
+    Rails.logger.debug "DEBUG: Completed update_profile"
     respond_with_resource
   end
 
