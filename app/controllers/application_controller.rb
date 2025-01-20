@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   helper :email
   helper :formatted_date
 
+  skip_before_action :verify_authenticity_token
+
   around_action :process_time_zone          # LocalesHelper
   around_action :use_preferred_locale       # LocalesHelper
   before_action :deny_spam_users            # CurrentUserHelper
@@ -24,7 +26,6 @@ class ApplicationController < ActionController::Base
   helper_method :supported_locales
   helper_method :is_old_browser?
 
-  skip_before_action :verify_authenticity_token
   caches_page :sitemap
 
   rescue_from(ActionController::UnknownFormat) do

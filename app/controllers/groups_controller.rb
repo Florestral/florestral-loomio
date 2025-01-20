@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     @groups = Queries::ExploreGroups.new.search_for(params[:q]).order('groups.memberships_count DESC')
     @total = @groups.count
