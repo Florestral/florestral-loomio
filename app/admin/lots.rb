@@ -1,6 +1,6 @@
 ActiveAdmin.register Lot do
   # Permitted parameters for strong parameters
-  permit_params :title, :location, :size, :description, user_ids: []
+  permit_params :title, :location, :size, :description
 
   # Index Page Configuration
   index do
@@ -10,9 +10,9 @@ ActiveAdmin.register Lot do
     column :location
     column :size
     column :description
-    column :users do |lot|
-      lot.users.map(&:email).join(", ")
-    end
+    # column :users do |lot|
+    #   lot.users.map(&:email).join(", ")
+    # end
     column :created_at
     column :updated_at
     actions
@@ -26,9 +26,9 @@ ActiveAdmin.register Lot do
       row :location
       row :size
       row :description
-      row :users do |lot|
-        lot.users.map(&:email).join(", ")
-      end
+      # row :users do |lot|
+      #   lot.users.map(&:email).join(", ")
+      # end
       row :created_at
       row :updated_at
     end
@@ -42,7 +42,7 @@ ActiveAdmin.register Lot do
       f.input :location
       f.input :size
       f.input :description
-      f.input :users, as: :check_boxes, collection: User.all
+      # f.input :users, as: :check_boxes, collection: User.all
     end
     f.actions
   end
@@ -51,7 +51,7 @@ ActiveAdmin.register Lot do
   filter :title
   filter :location
   filter :size
-  filter :users, collection: -> { User.all.pluck(:email, :id) }
+  # filter :users, collection: -> { User.all.pluck(:email, :id) }
   filter :created_at
   filter :updated_at
 end
