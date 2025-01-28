@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :lot do
+    title { "MyString" }
+    location { "MyString" }
+    size { 1 }
+    description { "MyText" }
+  end
+
 
   factory :membership do |m|
     m.user { |u| u.association(:user)}

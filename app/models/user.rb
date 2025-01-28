@@ -106,6 +106,10 @@ class User < ApplicationRecord
 
   has_many :tags, through: :groups
 
+  # LOTS
+  has_and_belongs_to_many :lots
+  belongs_to :lot, optional: true
+
   before_save :set_avatar_initials
   initialized_with_token :unsubscribe_token,        -> { Devise.friendly_token }
   initialized_with_token :email_api_key,            -> { SecureRandom.hex(16) }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_16_031145) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_28_140602) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -487,6 +487,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_16_031145) do
     t.integer "code", null: false
     t.boolean "is_reactivation", default: false, null: false
     t.index ["token"], name: "index_login_tokens_on_token"
+  end
+
+  create_table "lots", force: :cascade do |t|
+    t.string "title"
+    t.string "location"
+    t.integer "size"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lots_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "lot_id", null: false
+    t.index ["lot_id", "user_id"], name: "index_lots_users_on_lot_id_and_user_id"
+    t.index ["user_id", "lot_id"], name: "index_lots_users_on_user_id_and_lot_id"
   end
 
   create_table "member_email_aliases", force: :cascade do |t|
