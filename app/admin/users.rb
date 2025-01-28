@@ -13,7 +13,7 @@ ActiveAdmin.register User do
   filter :detected_locale, as: :string
   filter :time_zone
   filter :created_at
-  filter :lot, collection: Lot.all.pluck(:title, :id) # Add Lot filter
+  filter :lots, as: :select, collection: Lot.all.pluck(:title, :id), label: "Lots"
 
   # Scopes
   scope :all
@@ -26,15 +26,15 @@ ActiveAdmin.register User do
     column :email_newsletter
     column :locale
     column :time_zone
-    column :lot do |user|
-      user.lot&.title
+    column "Lots" do |user|
+      user.lots.map(&:title).join(", ") # Export all associated lots
     end
   end
 
   # Customizing the Controller
   controller do
     def permitted_params
-      params.require(:user).permit(:name, :email, :username, :complaints_count, :is_admin, :bot, :lot_id)
+      params.require(:user).permit(:name, :email, :username, :complaints_count, :is_admin, :bot, lot_ids: [])
     end
 
     def find_resource
@@ -55,8 +55,8 @@ ActiveAdmin.register User do
     column :locale
     column :time_zone
     column :bot
-    column :lot do |user|
-      user.lot&.title
+    column "Lots" do |user|
+      user.lots.map(&:title).join(", ") # Show all associated lots
     end
     actions
   end
@@ -67,7 +67,7 @@ ActiveAdmin.register User do
       f.input :name
       f.input :email, as: :string
       f.input :username, as: :string
-      f.input :lot, as: :select, collection: Lot.all.pluck(:title, :id), include_blank: true # Add Lot dropdown
+      f.input :lots, as: :select, collection: Lot.all.pluck(:title, :id), input_html: { multiple: true } # Enable multi-select for lots
       f.input :complaints_count
       f.input :is_admin
       f.input :bot, label: 'Bot account (do not add to polls)'
@@ -81,8 +81,8 @@ ActiveAdmin.register User do
       user.attributes.each do |k, v|
         row k.to_sym
       end
-      row :lot do
-        user.lot&.title
+      row "Lots" do
+        user.lots.map(&:title).join(", ") # Show all associated lots
       end
     end
 

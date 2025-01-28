@@ -108,7 +108,6 @@ class User < ApplicationRecord
 
   # LOTS
   has_and_belongs_to_many :lots
-  belongs_to :lot, optional: true
 
   before_save :set_avatar_initials
   initialized_with_token :unsubscribe_token,        -> { Devise.friendly_token }

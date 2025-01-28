@@ -1,6 +1,6 @@
 ActiveAdmin.register Lot do
   # Permitted parameters for strong parameters
-  permit_params :title, :location, :size, :description
+  permit_params :title, :location, :size, :description, user_ids: []
 
   # Index Page Configuration
   index do
@@ -10,9 +10,9 @@ ActiveAdmin.register Lot do
     column :location
     column :size
     column :description
-    # column :users do |lot|
-    #   lot.users.map(&:email).join(", ")
-    # end
+    column "Users" do |lot|
+      lot.users.map(&:email).join(", ") # Display associated users' emails
+    end
     column :created_at
     column :updated_at
     actions
@@ -26,12 +26,24 @@ ActiveAdmin.register Lot do
       row :location
       row :size
       row :description
-      # row :users do |lot|
-      #   lot.users.map(&:email).join(", ")
-      # end
+      row "Users" do |lot|
+        lot.users.map(&:email).join(", ") # Display associated users' emails
+      end
       row :created_at
       row :updated_at
     end
+
+    # Users Table
+    panel "Associated Users" do
+      table_for lot.users do
+        column :id
+        column :name
+        column :email
+        column :created_at
+        column :updated_at
+      end
+    end
+
     active_admin_comments
   end
 
@@ -42,7 +54,7 @@ ActiveAdmin.register Lot do
       f.input :location
       f.input :size
       f.input :description
-      # f.input :users, as: :check_boxes, collection: User.all
+      f.input :users, as: :check_boxes, collection: User.all.pluck(:email, :id) # Allow selecting users
     end
     f.actions
   end
@@ -51,7 +63,7 @@ ActiveAdmin.register Lot do
   filter :title
   filter :location
   filter :size
-  # filter :users, collection: -> { User.all.pluck(:email, :id) }
+  filter :users, collection: -> { User.all.pluck(:email, :id) }, label: "Associated Users"
   filter :created_at
   filter :updated_at
 end
