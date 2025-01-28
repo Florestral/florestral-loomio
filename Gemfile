@@ -80,6 +80,7 @@ group :development do
   gem 'web-console'
   gem 'spring'
   gem "spring-commands-rspec"
+  gem 'rails-erd'
 end
 
 group :test do

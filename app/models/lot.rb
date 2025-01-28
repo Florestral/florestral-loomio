@@ -6,8 +6,8 @@ class Lot < ApplicationRecord
     ["id", "title", "location", "size", "description", "created_at", "updated_at"]
   end
 
-  # Optionally define which associations are searchable (if any)
+  # Define searchable associations for Ransack
   def self.ransackable_associations(auth_object = nil)
-    []
+    ["users"] # Allow searching by associated users
   end
 end
