@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_28_140602) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_28_220751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -868,7 +868,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_28_140602) do
     t.jsonb "option_scores", default: {}, null: false
     t.integer "revoker_id"
     t.boolean "guest", default: false, null: false
+    t.bigint "lot_id"
     t.index ["guest"], name: "stances_guests", where: "(guest = true)"
+    t.index ["lot_id"], name: "index_stances_on_lot_id"
     t.index ["participant_id"], name: "index_stances_on_participant_id"
     t.index ["poll_id", "cast_at"], name: "index_stances_on_poll_id_and_cast_at", order: "NULLS FIRST"
     t.index ["poll_id", "participant_id", "latest"], name: "index_stances_on_poll_id_and_participant_id_and_latest", unique: true, where: "(latest = true)"
@@ -1078,4 +1080,5 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_28_140602) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "stances", "lots"
 end
