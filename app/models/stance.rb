@@ -39,7 +39,7 @@ class Stance < ApplicationRecord
       FROM stances
         LEFT JOIN users ON users.id = stances.participant_id
         LEFT JOIN polls ON polls.id = stances.poll_id
-      WHERE polls.discarded_at IS NULL 
+      WHERE polls.discarded_at IS NULL
         AND stances.cast_at IS NOT null
         AND NOT (polls.anonymous = TRUE AND polls.closed_at IS NULL)
         AND NOT (polls.hide_results = 2 AND polls.closed_at IS NULL)
@@ -63,6 +63,10 @@ class Stance < ApplicationRecord
 
   has_many :stance_choices, dependent: :destroy
   has_many :poll_options, through: :stance_choices
+
+  # LOT ASSOCIATIONS
+  belongs_to :lot, optional: true
+  alias :voting_lot :lot
 
   has_paper_trail only: [:reason, :option_scores, :revoked_at, :revoker_id, :inviter_id]
 
@@ -88,6 +92,10 @@ class Stance < ApplicationRecord
   scope :undecided,      -> { where("stances.cast_at IS NULL") }
   scope :revoked,  -> { where("revoked_at IS NOT NULL") }
   scope :guests, -> { where("inviter_id is not null") }
+
+  # LOT SCOPES
+  scope :by_lot, ->(lot_id) { where(lot_id: lot_id) }
+  scope :without_lot, -> { where(lot_id: nil) }
 
   scope :redeemable, -> { latest.guests.undecided.where('stances.accepted_at IS NULL') }
   scope :redeemable_by,  -> (user_id) {
