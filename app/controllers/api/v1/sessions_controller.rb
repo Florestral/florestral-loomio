@@ -1,6 +1,7 @@
 class API::V1::SessionsController < Devise::SessionsController
   include PrettyUrlHelper
   before_action :configure_permitted_parameters
+  before_action :set_cache_buster, only: [:create]
 
   def create
     if user = attempt_login
@@ -24,6 +25,12 @@ class API::V1::SessionsController < Devise::SessionsController
   end
 
   private
+
+  def set_cache_buster
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+  end
 
   def failure_message
     if resource_params[:password] && User.where(email: resource_params[:email]).where.not(locked_at: nil).exists?
