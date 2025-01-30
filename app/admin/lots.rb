@@ -18,6 +18,23 @@ ActiveAdmin.register Lot do
     actions
   end
 
+  controller do
+    def create
+      Rails.logger.info "PERMITTED PARAMS: #{permitted_params.inspect}"
+      @lot = Lot.new(permitted_params[:lot])
+
+      if params[:lot][:user_ids].present?
+        @lot.users = User.where(id: params[:lot][:user_ids])
+      end
+
+      if @lot.save
+        redirect_to admin_lot_path(@lot), notice: 'Lot was successfully created.'
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
+  end
+
   # Show Page Configuration
   show do
     attributes_table do
@@ -63,7 +80,7 @@ ActiveAdmin.register Lot do
   filter :title
   filter :location
   filter :size
-  filter :users, collection: -> { User.all.pluck(:email, :id) }, label: "Associated Users"
+  filter :users, collection: -> { User.all.pluck(:name, :id) }, label: "Associated Users"
   filter :created_at
   filter :updated_at
 end
