@@ -1,0 +1,8 @@
+<h3>Upload CSV File</h3>
+<%= form_with url: import_csv_admin_lots_path, method: :post, multipart: true do |f| %>
+  <div class="form-group">
+    <%= f.label :file, "Choose CSV File" %>
+    <%= f.file_field :file %>
+  </div>
+  <%= f.submit "Upload", class: "button" %>
+<% end %>

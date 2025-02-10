@@ -18,9 +18,29 @@ ActiveAdmin.register Lot do
     actions
   end
 
+  # Custom CSV Upload Action
+  action_item :upload_csv do
+    link_to 'Upload CSV', admin_lots_upload_csv_path
+  end
+
+  collection_action :upload_csv, method: :get do
+    render 'admin/csv_upload'
+  end
+
+  collection_action :import_csv, method: :post do
+    if params[:file].present?
+      SmarterCSV.process(params[:file].path).each do |row|
+        Lot.create!(row.slice(:title, :location, :size, :description))
+      end
+      redirect_to collection_path, notice: "CSV imported successfully!"
+    else
+      redirect_to admin_lots_upload_csv_path, alert: "Please attach a CSV file."
+    end
+  end
+
   controller do
+    # Ensure redirection to index after creation
     def create
-      Rails.logger.info "PERMITTED PARAMS: #{permitted_params.inspect}"
       @lot = Lot.new(permitted_params[:lot])
 
       if params[:lot][:user_ids].present?
@@ -28,7 +48,7 @@ ActiveAdmin.register Lot do
       end
 
       if @lot.save
-        redirect_to admin_lot_path(@lot), notice: 'Lot was successfully created.'
+        redirect_to admin_lots_path, notice: 'Lot was successfully created.'
       else
         render :new, status: :unprocessable_entity
       end
