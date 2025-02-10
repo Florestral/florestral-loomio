@@ -10,6 +10,8 @@ class UserSerializer < AuthorSerializer
              :date_time_pref,
              :complaints_count
 
+  has_many :lots, serializer: LotSerializer
+
   def include_has_password?
     scope[:include_password_status]
   end

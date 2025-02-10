@@ -23,6 +23,7 @@ class StanceSerializer < ApplicationSerializer
 
   has_one :poll, serializer: PollSerializer, root: :polls
   has_one :participant, serializer: AuthorSerializer, root: :users
+  has_one :lot, serializer: LotSerializer, root: :lots
 
   def order_at
     object.cast_at || object.created_at
