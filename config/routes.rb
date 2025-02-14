@@ -19,6 +19,14 @@ Rails.application.routes.draw do
     # mount PgHero::Engine, at: "/admin/pghero"
   end
 
+  namespace :admin do
+    resources :uploads, only: [:create] do
+      collection do
+        post :import
+      end
+    end
+  end
+
   if !Rails.env.production?
     namespace :dev do
       dev_routes_for(:discussions)

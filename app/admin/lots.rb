@@ -20,13 +20,15 @@ ActiveAdmin.register Lot do
 
   # Custom CSV Upload Action
   action_item :upload_csv do
-    link_to 'Upload CSV', admin_lots_upload_csv_path
+    link_to 'Upload CSV', collection_path(:upload_csv)
   end
 
+  # Page for uploading CSV
   collection_action :upload_csv, method: :get do
     render 'admin/csv_upload'
   end
 
+  # Action to process the CSV upload
   collection_action :import_csv, method: :post do
     if params[:file].present?
       SmarterCSV.process(params[:file].path).each do |row|
@@ -34,7 +36,7 @@ ActiveAdmin.register Lot do
       end
       redirect_to collection_path, notice: "CSV imported successfully!"
     else
-      redirect_to admin_lots_upload_csv_path, alert: "Please attach a CSV file."
+      redirect_to collection_path, alert: "Please attach a CSV file."
     end
   end
 
